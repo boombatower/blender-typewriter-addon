@@ -23,8 +23,8 @@ import random
 
 bl_info = {
     'name': 'Typewriter Text',
-    'author': 'Bassam Kurdali, Vilem Novak',
-    'version': '0.2',
+    'author': 'Bassam Kurdali, Vilem Novak, Jimmy Berry',
+    'version': '0.3',
     'blender': (2, 7, 0),
     'location': 'Properties Editor, Text Context',
     'description': 'Typewriter Text effect',
@@ -75,7 +75,11 @@ def uptext(text):
     if text.use_randomize and len(t)>text.character_count:
         t=randomize(t[:text.character_count],text.randomize_width)
 
-    text.body = t[:text.character_count]
+    prefix = ''
+    if text.preserve_newline and text.character_start > 0:
+        prefix = '\n' * t.count('\n', 0, text.character_start)
+
+    text.body = prefix + t[text.character_start:text.character_count]
 
 @persistent
 def typewriter_text_update_frame(scene):
@@ -121,6 +125,8 @@ class TEXT_PT_Typewriter(bpy.types.Panel):
         st = context.space_data
         text = context.active_object.data
         layout = self.layout
+        layout.prop(text,'character_start')
+        layout.prop(text,'preserve_newline')
         layout.prop(text,'character_count')
         layout.prop(text,'source_text')
         if text.source_text in bpy.data.texts:
@@ -135,6 +141,10 @@ def register():
     addon registration function
     '''
     # create properties
+    bpy.types.TextCurve.character_start = bpy.props.IntProperty(
+      name="character_start",update=update_func, min=0, options={'ANIMATABLE'})
+    bpy.types.TextCurve.preserve_newline = bpy.props.BoolProperty(
+      name="preserve_newline", default=True)
     bpy.types.TextCurve.character_count = bpy.props.IntProperty(
       name="character_count",update=update_func, min=0, options={'ANIMATABLE'})
     bpy.types.TextCurve.backup_text = bpy.props.StringProperty(
