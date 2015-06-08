@@ -19,12 +19,13 @@
 # <pep8-80 compliant>
 import bpy
 from bpy.app.handlers import persistent
+import random
 
 bl_info = {
     'name': 'Typewriter Text',
-    'author': 'Bassam Kurdali',
-    'version': '0.1',
-    'blender': (2, 6, 5),
+    'author': 'Bassam Kurdali, Vilem Novak',
+    'version': '0.2',
+    'blender': (2, 7, 0),
     'location': 'Properties Editor, Text Context',
     'description': 'Typewriter Text effect',
     'url': 'http://urchn.org',
@@ -35,6 +36,22 @@ Typewriter Text Animation For Font Objects
 
 """
 
+def randomize(t,width):
+    nt=''
+    lines=t.splitlines()
+    totlen=len(t)
+    i=0
+    for l in lines:
+        for ch in l:
+            if i>totlen+1-width:
+                nt+=random.choice(l)
+            else:
+                nt+=ch
+            i+=1
+        nt+='\n'
+        i+=2
+    return(nt)
+
 
 def uptext(text):
     '''
@@ -42,10 +59,23 @@ def uptext(text):
     '''
     source = text.source_text
     if source in bpy.data.texts:
-        text.body = bpy.data.texts[source].as_string()[:text.character_count]
-    else:
-        text.body = source[:text.character_count]
+        if text.separator!='':    strings=bpy.data.texts[source].as_string().split(text.separator)
+        else:
+            strings=[bpy.data.texts[source].as_string()]
+        idx=min(len(strings),text.text_index)
+        t=strings[idx]
 
+        #remove line endings after separator
+        while t.find('\n')==0:
+            t=t[1:]
+    else:
+        t = source
+
+    #randomize
+    if text.use_randomize and len(t)>text.character_count:
+        t=randomize(t[:text.character_count],text.randomize_width)
+
+    text.body = t[:text.character_count]
 
 @persistent
 def typewriter_text_update_frame(scene):
@@ -93,7 +123,12 @@ class TEXT_PT_Typewriter(bpy.types.Panel):
         layout = self.layout
         layout.prop(text,'character_count')
         layout.prop(text,'source_text')
-
+        if text.source_text in bpy.data.texts:
+            layout.prop(text,'separator')
+            layout.prop(text,'text_index')
+        layout.prop(text,'use_randomize')
+        if text.use_randomize:
+            layout.prop(text,'randomize_width')
 
 def register():
     '''
@@ -108,6 +143,16 @@ def register():
       name="use_animated_text", default=False)
     bpy.types.TextCurve.source_text = bpy.props.StringProperty(
       name="source_text")
+
+
+    bpy.types.TextCurve.text_index = bpy.props.IntProperty(
+      name="index",update=update_func, min=0, options={'ANIMATABLE'})
+    bpy.types.TextCurve.separator = bpy.props.StringProperty(
+      name="separator", default='#' )
+    bpy.types.TextCurve.use_randomize = bpy.props.BoolProperty(
+      name="randomize", default=False)
+    bpy.types.TextCurve.randomize_width = bpy.props.IntProperty(
+      name="randomize width",update=update_func, default=10, min=0, options={'ANIMATABLE'})
     # register the module:
     bpy.utils.register_module(__name__)
     # add the frame change handler
