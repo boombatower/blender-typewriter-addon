@@ -73,6 +73,8 @@ def uptext(text):
     prefix = ''
     if text.preserve_newline and text.character_start > 0:
         prefix = '\n' * t.count('\n', 0, text.character_start)
+    if text.preserve_space and text.character_start > 0:
+        prefix += ' ' * (text.character_start - (t.rfind('\n', 0, text.character_start) + 1))
 
     text.body = prefix + t[text.character_start:text.character_count]
 
@@ -122,6 +124,7 @@ class TEXT_PT_Typewriter(bpy.types.Panel):
         layout = self.layout
         layout.prop(text,'character_start')
         layout.prop(text,'preserve_newline')
+        layout.prop(text,'preserve_space')
         layout.prop(text,'character_count')
         layout.prop(text,'source_text')
         if text.source_text in bpy.data.texts:
@@ -140,6 +143,8 @@ def register():
       name="character_start",update=update_func, min=0, options={'ANIMATABLE'})
     bpy.types.TextCurve.preserve_newline = bpy.props.BoolProperty(
       name="preserve_newline", default=True)
+    bpy.types.TextCurve.preserve_space = bpy.props.BoolProperty(
+      name="preserve_space", default=True)
     bpy.types.TextCurve.character_count = bpy.props.IntProperty(
       name="character_count",update=update_func, min=0, options={'ANIMATABLE'})
     bpy.types.TextCurve.backup_text = bpy.props.StringProperty(

@@ -9,7 +9,8 @@ Typewriter text animation for font objects.
 - character_count property to control the number of characters to display from
   source text
 - character_start property to skip over characters
-- preserve_newline property to preserve skipped newline characters
+- preserve_newline property to preserve skipped newlines
+- preserve_space property to preserve skipped indentation
 - define text separator for multiple chunks of text and control which is active
 - randomize last N characters for extra effect
 
