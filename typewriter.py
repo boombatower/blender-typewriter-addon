@@ -23,18 +23,13 @@ import random
 
 bl_info = {
     'name': 'Typewriter Text',
+    'description': 'Typewriter Text effect for font objects',
     'author': 'Bassam Kurdali, Vilem Novak, Jimmy Berry',
-    'version': '0.3',
+    'version': (0, 3, 0),
     'blender': (2, 7, 0),
     'location': 'Properties Editor, Text Context',
-    'description': 'Typewriter Text effect',
-    'url': 'http://urchn.org',
+    'url': 'https://github.com/boombatower/blender-typewriter-addon',
     'category': 'Text'}
-
-__bpydoc__ = """
-Typewriter Text Animation For Font Objects
-
-"""
 
 def randomize(t,width):
     nt=''
