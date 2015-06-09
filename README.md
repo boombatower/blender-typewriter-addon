@@ -19,6 +19,7 @@ Typewriter text animation for font objects.
 
 - [Bassam Kurdali (verison 0.1)](https://www.youtube.com/watch?v=-z-P7cn5kZE)
 - [Vilem Novak (version 0.2)](https://www.youtube.com/watch?v=L6AaKPwcZAE)
+- [Jimmy Berry (version 0.3.1)](https://www.youtube.com/watch?v=T0ryc7kJzZA)
 
 
 ## Download
