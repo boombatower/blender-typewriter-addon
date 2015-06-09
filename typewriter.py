@@ -166,7 +166,7 @@ def register():
     # register the module:
     bpy.utils.register_module(__name__)
     # add the frame change handler
-    bpy.app.handlers.frame_change_post.append(typewriter_text_update_frame)
+    bpy.app.handlers.scene_update_pre.append(typewriter_text_update_frame)
 
 
 def unregister():
@@ -174,7 +174,8 @@ def unregister():
     addon unregistration function
     '''
     # remove the frame change handler
-    bpy.app.handlers.frame_change_post.remove(typewriter_text_update_frame)
+    bpy.app.handlers.scene_update_pre.remove(typewriter_text_update_frame)
+
     # remove the properties
     # XXX but how???
     # remove the panel
