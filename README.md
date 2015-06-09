@@ -1,6 +1,6 @@
 # Blender Typewriter Addon
 
-Typewriter text animation for font objects.
+Typewriter text animation for font objects. ([example animation](https://www.youtube.com/watch?v=fsAgXhdbDv0))
 
 
 ## Features
