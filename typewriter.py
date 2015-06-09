@@ -25,7 +25,7 @@ bl_info = {
     'name': 'Typewriter Text',
     'description': 'Typewriter Text effect for font objects',
     'author': 'Bassam Kurdali, Vilem Novak, Jimmy Berry',
-    'version': (0, 3, 0),
+    'version': (0, 3, 1),
     'blender': (2, 7, 0),
     'location': 'Properties Editor, Text Context',
     'url': 'https://github.com/boombatower/blender-typewriter-addon',
